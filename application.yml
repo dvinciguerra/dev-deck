@@ -1,0 +1,44 @@
+actions:
+  open-firefox:
+    label: Open Firefox
+    description: Open new firefox tab
+    type: Runner
+    color: red
+    exec: firefox -new-tab about:blank
+
+  open-slack:
+    label: Open Slack
+    description: Slack ready to chat
+    type: Activate
+    color: lightblue
+    exec: slack
+    shortcut: ctrl_k
+
+  open-rdstation:
+    label: 'Application #prod'
+    description: Open application in production
+    type: Runner
+    color: default
+    exec: firefox -new-tab http://app.example.com.br
+
+  open-dev-rdstation:
+    label: 'Applciation #devel'
+    description: Open applciation in local development
+    type: Runner
+    color: default
+    exec: firefox -new-tab http://localhost:3000
+
+  open-github:
+    label: Open GitHub
+    description: Open GitHub
+    type: Runner
+    color: lightblue
+    exec: firefox -new-tab "https://github.com"
+
+  type-lorem:
+    label: Type Lorem
+    description: Type a lorem ipsum
+    type: Typer
+    color: yellow
+    exec: Lorem ipsum dolor sit amet
+
