@@ -15,25 +15,25 @@ actions:
     shortcut: ctrl_k
 
   open-rdstation:
-    label: 'Application #prod'
-    description: Open application in production
+    label: 'Open Production App'
+    description: Open RD Station Marketing
     type: Runner
     color: default
-    exec: firefox -new-tab http://app.example.com.br
+    exec: firefox -new-tab https://app.rdstation.com.br
 
   open-dev-rdstation:
-    label: 'Applciation #devel'
-    description: Open applciation in local development
+    label: 'Open Devel App'
+    description: Open RD Station Marketing (devel)
     type: Runner
     color: default
     exec: firefox -new-tab http://localhost:3000
 
-  open-github:
-    label: Open GitHub
-    description: Open GitHub
+  jarillaz-pull-requests:
+    label: GitHub Pull Requests
+    description: Open GitHub Pull Requests
     type: Runner
     color: lightblue
-    exec: firefox -new-tab "https://github.com"
+    exec: firefox -new-tab "https://github.com/pulls?q=is%3Apr+is%3Aopen+author%3Advinciguerra+archived%3Afalse+sort%3Aupdated-desc"
 
   type-lorem:
     label: Type Lorem

@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
-require "yaml"
-require "sinatra"
-require "sinatra/reloader" if development?
+require 'yaml'
+require 'sinatra'
+require 'sinatra/json'
+require 'sinatra/reloader' if development?
 
-require "xdo/keyboard"
-require "xdo/mouse"
-require "xdo/xwindow"
+require 'xdo/keyboard'
+require 'xdo/mouse'
+require 'xdo/xwindow'
 
-require "pp"
+require 'pp'
 
 # deck classes
 module Deck
-  @config = YAML.load_file("application.yml")
+  @config = YAML.load_file('application.yml')
 
   def self.config
     @config
@@ -20,7 +21,7 @@ module Deck
 
   class ActionManager
     def self.call(action_name)
-      action = Deck.config["actions"][action_name]
+      action = Deck.config['actions'][action_name]
 
       return unless action
 
@@ -37,9 +38,9 @@ module Deck
     class Activate
       def self.run(action = {})
         Thread.new do
-          win = XDo::XWindow.new(XDo::XWindow.search(action["exec"]).last)
+          win = XDo::XWindow.new(XDo::XWindow.search(action['exec']).last)
           win.activate
-          XDo::Keyboard.public_send(action["shortcut"]) if action["shortcut"]
+          XDo::Keyboard.public_send(action['shortcut']) if action['shortcut']
         end
       end
     end
@@ -47,7 +48,7 @@ module Deck
     class Runner
       def self.run(action = {})
         Thread.new do
-          spawn action["exec"]
+          spawn action['exec']
         end
       end
     end
@@ -55,7 +56,7 @@ module Deck
     class Typer
       def self.run(action = {})
         Thread.new do
-          XDo::Keyboard.simulate(action["exec"])
+          XDo::Keyboard.simulate(action['exec'])
         end
       end
     end
@@ -65,18 +66,32 @@ end
 # webapp
 
 # GET /
-get "/" do
+get '/' do
   erb :index, locals: { actions: Deck.config['actions'] }
 end
 
+# GET /events
+get '/events' do
+  event_list = Deck.config['actions'].map do |event, values|
+    {
+      label: values['label'],
+      event: event,
+      color: values['color'],
+      description: values['description']
+    }
+  end
+
+  json(events: event_list)
+end
+
 # GET /events/:event
-get "/events/:event" do
-  Deck::ActionManager.call(params["event"])
-  redirect "/"
+get '/events/:event' do
+  Deck::ActionManager.call(params['event'])
+  redirect '/'
 end
 
 # GET /manifest.json
-get "/manifest.json" do
+get '/manifest.json' do
   content_type :json
   erb :manifest, layout: nil
 end
@@ -93,14 +108,6 @@ __END__
       </a>
     </div>
   <% end %>
-  <!-- div class="col-xs-3"><a class="btn btn-danger btn-deck" href="/events/open-firefox">Open Firefox</a></div>
-  <div class="col-xs-3"><a class="btn btn-info btn-deck" href="/events/open-slack">Open Slack</a></div>
-  <div class="col-xs-3"><a class="btn btn-warning btn-deck" href="/events/type-lorem">Type Lorem</a></div>
-  <div class="col-xs-3"><a class="btn btn-primary btn-deck" href="/events/open-rdstation">Prod RDStation</a></div>
-  <div class="col-xs-3"><a class="btn btn-primary btn-deck" href="/events/open-dev-rdstation">Dev RDStation</a></div>
-  <div class="col-xs-3"><a class="btn btn-info btn-deck" href="/events/jarillaz-pull-requests">Jarillaz PRs</a></div>
-  <div class="col-xs-3"><a class="btn btn-primary btn-deck" href="#"></a></div>
-  <div class="col-xs-3"><a class="btn btn-primary btn-deck" href="#"></a></div -->
 </div>
 
 

@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem 'sinatra',  '~> 2.0', '>= 2.0.5'
+gem 'sinatra-contrib'
 
 # sudo apt-get install xdotool
 gem 'xdo',      '~> 0.0.4'
